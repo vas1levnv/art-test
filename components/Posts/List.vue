@@ -11,7 +11,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-if="store.isLoadingPosts" class="spinner">Идет загрузка постов...</div>
+    <div v-if="store.isLoadingPosts && !store.postsList.length" class="spinner">Идет загрузка постов...</div>
     <div v-else-if="store.errorMessage" class="spinner">{{store.errorMessage}}</div>
     <div v-else>
       <div class="d-flex mb-3">
@@ -21,11 +21,12 @@ onMounted(() => {
       <div v-for="post in store.postsList"
       class="border border-orange-500 rounded-lg mb-3 px-2"
       :key="post.id">
-        <p>{{ post.id }}</p>
-        <p>{{ post.title }}</p>
-        <p>{{ post.body }}</p>
+        <p>id: {{ post.id }}</p>
+        <p>userId: {{ post.userId }}</p>
+        <p>title: {{ post.title }}</p>
+        <p>body: {{ post.body }}</p>
       </div>
-      <UICutomButton v-if="store.isExistNextPage" @click="handleShowMore">Показать еще</UICutomButton>
+      <UICutomButton v-if="store.isExistNextPage" @click="handleShowMore">{{ store.isLoadingPosts ? 'Идет загрузка постов...' : 'Показать еще'}}</UICutomButton>
     </div>
   </div>
 </template>

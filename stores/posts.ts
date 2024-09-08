@@ -16,7 +16,7 @@ export const usePostsStore = defineStore('postsStore', {
       postsList: [],
       isLoadingPosts: false,
       errorMessage: null,
-      limit: 5,
+      limit: 10,
       offset: 0,
       total: 0,
     } as unknown as PostsState),
@@ -32,8 +32,8 @@ export const usePostsStore = defineStore('postsStore', {
         }
         this.isLoadingPosts = true;
         try{
-          const response: any = await fetch(`${this.url}?_limit=${this.limit}&_offset=${this.offset}`);
-          this.total = response.headers.get('x-total-count');
+          const response: any = await fetch(`${this.url}?_limit=${this.limit}&_start=${this.offset}`);
+          this.total = +response.headers.get('x-total-count');
           const data = await response.json();
           this.postsList = [...this.postsList,  ...data];
           this.offset += this.limit;
