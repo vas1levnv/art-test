@@ -7,9 +7,11 @@ const toggleModalPost = () => {
 
 <template>
   <div class="container mx-auto px-5 my-5">
-    <UICutomButton class="sticky top-0 mb-5" @click="toggleModalPost">
-      Добавить пост
-    </UICutomButton>
+    <header class="sticky top-0 bg-white py-5">
+      <UICutomButton @click="toggleModalPost">
+        Добавить пост
+      </UICutomButton>
+    </header>
     <PostsList/>
     <UIModal v-if="isShowModalPost" @closeModal="toggleModalPost"/>
   </div>

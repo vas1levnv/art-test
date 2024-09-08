@@ -8,6 +8,7 @@ export type PostsState ={
     limit: number,
     offset: number,
     total: number,
+    sortValue: string,
 }
 
 export const usePostsStore = defineStore('postsStore', {
@@ -19,11 +20,19 @@ export const usePostsStore = defineStore('postsStore', {
       limit: 10,
       offset: 0,
       total: 0,
+      sortValue: 'id',
     } as unknown as PostsState),
     getters:{
       isExistNextPage():boolean{
         return this.total > this.offset;
-      }
+      },
+      sortedPostList(): PostsItem[]{
+        if(this.sortValue === 'id'){
+          return this.postsList.sort((a:PostsItem, b:PostsItem) => a.id - b.id);
+        } else{
+          return this.postsList.sort((a:PostsItem, b:PostsItem) => a.title.localeCompare(b.title));
+        }
+      },
     },
     actions: {
       async fetch(isFirstFetch: boolean) {
@@ -50,11 +59,8 @@ export const usePostsStore = defineStore('postsStore', {
       },
       // 5) Добавить возможность ordering таблицы по ID
       // странная просьба, так как посты уже отсортированы по id, добавил сортировку по тайтлу еще
-      sortPostsById(){
-        this.postsList.sort((a:PostsItem, b:PostsItem) => a.id - b.id);
-      },
-      sortPostsByTitle(){
-        this.postsList.sort((a:PostsItem, b:PostsItem) => a.title.localeCompare(b.title));
+      sortPostsValue(value: string){
+        this.sortValue = value;
       },
       async addPost(post: any){
         const response: PostsItem = await $fetch(this.url, {

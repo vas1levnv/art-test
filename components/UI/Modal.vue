@@ -9,11 +9,12 @@ const store = usePostsStore();
 const title = ref<string>('');
 const body = ref<string>('');
 const errorMessage = ref<any>('');
+const errorMessageEmpty = ref<any>('');
 const isLoading = ref<boolean>(false);
 
 const onAddPost = async() => {
     if(!title.value || !body.value){
-        return;
+        return errorMessageEmpty.value = 'Заполните пожалуйста все поля';
     }
     const post = {
         title: toRaw(title.value),
@@ -22,9 +23,10 @@ const onAddPost = async() => {
     }
     try{
         isLoading.value = true;
-        await store.addPost(toRaw(post));
+        await store.addPost(post);
         title.value = '';
         body.value = '';
+        errorMessageEmpty.value = '';
         emit('closeModal');
     }catch(error: unknown){
         if (error instanceof Error) {
@@ -49,6 +51,7 @@ const handleClose = () => {
         <div class="modal-content relative" @click.stop>
             <button class="absolute top-5 right-5 p-2" @click="handleClose">X</button>
             <h2 class="text-4xl text-center mb-5">Создать пост:</h2>
+            <div v-if="errorMessageEmpty" class="text-red-600">{{ errorMessageEmpty }}</div>
             <div v-if="isLoading">Идет отправка поста...</div>
             <div v-else-if="errorMessage" class="text-red-600">{{errorMessage}}</div>
             <div v-else class="grid gap-4">
