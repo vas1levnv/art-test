@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
+import { defineEmits } from 'vue'
 
-
+const emit = defineEmits<{
+  (e: 'closeModal'): void
+}>()
 const store = usePostsStore();
 const title = ref<string>('');
 const body = ref<string>('');
@@ -35,13 +38,6 @@ const onAddPost = async() => {
     }
     
 };
-
-import { defineEmits } from 'vue'
-
-const emit = defineEmits<{
-  (e: 'closeModal'): void
-}>()
-
 const handleClose = () => {
     emit('closeModal');
 }

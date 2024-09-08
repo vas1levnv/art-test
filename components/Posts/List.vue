@@ -14,7 +14,7 @@ onMounted(() => {
     <div v-if="store.isLoadingPosts && !store.postsList.length" class="spinner">Идет загрузка постов...</div>
     <div v-else-if="store.errorMessage" class="spinner">{{store.errorMessage}}</div>
     <div v-else>
-      <div class="d-flex mb-3">
+      <div class="sticky top-8 d-flex mb-3">
         <UICutomButton @click="store.sortPostsById">Отсортировать по id</UICutomButton>
         <UICutomButton @click="store.sortPostsByTitle">Отсортировать по title</UICutomButton>
       </div>
